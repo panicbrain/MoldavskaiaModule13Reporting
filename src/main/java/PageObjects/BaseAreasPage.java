@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static Utils.Screenshoter.takeScreenshot;
+
 public abstract class BaseAreasPage extends AbstractPage {
     public BaseAreasPage(WebDriver driver) {
         super(driver);
@@ -26,6 +28,9 @@ public abstract class BaseAreasPage extends AbstractPage {
 
     public NewLetterPage createNewLetter() {
         waitForElementEnabled(NEW_LETTER_BUTTON);
+        highlightElement(NEW_LETTER_BUTTON);
+        takeScreenshot();
+        unHighlightElement(NEW_LETTER_BUTTON);
         driver.findElement(NEW_LETTER_BUTTON).click();
         MyLogger.info("New letter page is opened");
         return new NewLetterPage(driver);
@@ -33,6 +38,9 @@ public abstract class BaseAreasPage extends AbstractPage {
 
     public DraftMailsPage openDraftFolder() {
         waitForElementEnabled(DRAFT_LETTERS_FOLDER_LOCATOR);
+        highlightElement(DRAFT_LETTERS_FOLDER_LOCATOR);
+        takeScreenshot();
+        unHighlightElement(DRAFT_LETTERS_FOLDER_LOCATOR);
         driver.findElement(DRAFT_LETTERS_FOLDER_LOCATOR).click();
         waitForLoad(driver);
         MyLogger.info("Draft folder is opened");
@@ -41,6 +49,9 @@ public abstract class BaseAreasPage extends AbstractPage {
 
     public SentMailsPage openSentFolder() {
         waitForElementEnabled(SENT_LETTERS_FOLDER_LOCATOR);
+        highlightElement(SENT_LETTERS_FOLDER_LOCATOR);
+        takeScreenshot();
+        unHighlightElement(SENT_LETTERS_FOLDER_LOCATOR);
         driver.findElement(SENT_LETTERS_FOLDER_LOCATOR).click();
         MyLogger.info("Sent folder is opened");
         return new SentMailsPage(driver);
@@ -48,6 +59,9 @@ public abstract class BaseAreasPage extends AbstractPage {
 
     public HomePage logOff() {
         waitForElementEnabled(LOG_OFF_BUTTON_LOCATOR);
+        highlightElement(LOG_OFF_BUTTON_LOCATOR);
+        takeScreenshot();
+        unHighlightElement(LOG_OFF_BUTTON_LOCATOR);
         driver.findElement(LOG_OFF_BUTTON_LOCATOR).click();
         MyLogger.info("Log off button was clicked");
         return new HomePage(driver);

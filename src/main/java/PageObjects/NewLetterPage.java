@@ -5,6 +5,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 
+import static Utils.Screenshoter.takeScreenshot;
+
 public class NewLetterPage extends BaseAreasPage {
     public NewLetterPage(WebDriver driver) {
         super(driver);
@@ -37,6 +39,9 @@ public class NewLetterPage extends BaseAreasPage {
 
     public NewLetterPage saveAsDraft() {
         waitForElementEnabled(SAVE_AS_DRAFT_BUTTON_LOCATOR);
+        highlightElement(SAVE_AS_DRAFT_BUTTON_LOCATOR);
+        takeScreenshot();
+        unHighlightElement(SAVE_AS_DRAFT_BUTTON_LOCATOR);
         driver.findElement(SAVE_AS_DRAFT_BUTTON_LOCATOR).click();
         waitForElementVisible(SAVE_STATUS_MESSAGE_LOCATOR);
         MyLogger.info("The mail was saved as draft");
@@ -67,6 +72,9 @@ public class NewLetterPage extends BaseAreasPage {
 
     public void sendMail() {
         waitForElementEnabled(SEND_MAIL_BUTTON);
+        highlightElement(SEND_MAIL_BUTTON);
+        takeScreenshot();
+        unHighlightElement(SEND_MAIL_BUTTON);
         driver.findElement(SEND_MAIL_BUTTON).click();
         waitForElementVisible(SENT_MAIL_MESSAGE);
         MyLogger.info("The mail was sent");

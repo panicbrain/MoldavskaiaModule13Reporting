@@ -1,13 +1,13 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="Mail.Ru tests" parallel="methods" thread-count="3">
+<suite name="MailRuTests" parallel="methods" thread-count="3">
     <listeners>
         <listener class-name="Utils.ScreenshotListener" />
     </listeners>
     <test name="MailRuTests">
 
     <packages>
-        <package name="tests"></package>
+        <package name="Tests"></package>
     </packages>
     </test>
 </suite>

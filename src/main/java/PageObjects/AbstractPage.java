@@ -1,9 +1,7 @@
 package PageObjects;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import io.qameta.allure.Attachment;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -52,4 +50,10 @@ public abstract class AbstractPage {
         wait.until(pageLoadCondition);
     }
 
+    @Attachment(value = "Screenshot", type = "image/png")
+    private static byte[] captureScreenshot(WebDriver driver) {
+        byte[] screenshot = null;
+        screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+        return screenshot;
+    }
 }

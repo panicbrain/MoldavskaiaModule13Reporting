@@ -2,7 +2,9 @@ package Tests;
 
 import BusinessObjects.Users;
 import DriverManager.ChromeWebDriverSingleton;
+import Loggers.MyLogger;
 import PageObjects.*;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -12,6 +14,12 @@ import static PageObjects.BaseAreasPage.MAIL_SUBJECT;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
+
+import org.testng.ITestResult;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+
+import java.io.File;
 
 public class MailRuTests {
 
@@ -25,9 +33,22 @@ public class MailRuTests {
     }
 
     @AfterMethod(alwaysRun = true)
-    public void afterTest() {
+    public void afterMethod(ITestResult result) {
+        if (ITestResult.FAILURE == result.getStatus()) {
+            try {
+                TakesScreenshot ts = (TakesScreenshot) driver;
+                File source = ts.getScreenshotAs(OutputType.FILE);
+                String screenshotName = "./Screenshots/" + System.nanoTime() + result.getName();
+                File copy = new File(screenshotName + ".png");
+                FileUtils.copyFile(source, copy);
+                MyLogger.debug("Test failed, saved screenshot: "+ screenshotName + ".png");
+            } catch (Exception e) {
+                MyLogger.error("Failed to make screenshot");
+            }
+        }
         ChromeWebDriverSingleton.kill();
     }
+
 
     @Test(description = "user can log in using their email and password")
     public void loginTest() {
@@ -75,7 +96,7 @@ public class MailRuTests {
 
         //open drafts folder
         DraftMailsPage draftMailsPage = newLetterPage.openDraftFolder();
-        String expectedDraftSavedTitle = new String("Новое письмо - Почта Mail.Ru");
+        String expectedDraftSavedTitle = new String("Черновики - Почта Mail.Ru");
         assertEquals(draftMailsPage.driver.getTitle(), expectedDraftSavedTitle);
 
         // assert that draft presents in the Draft folder
@@ -83,7 +104,8 @@ public class MailRuTests {
 
         //Open saved draft
         newLetterPage = draftMailsPage.openLastSavedDraft();
-        assertEquals(newLetterPage.driver.getTitle(), expectedDraftSavedTitle);
+        String expectedTitleOfPageWithLastSavedDraft = new String("Новое письмо - Почта Mail.Ru");
+        assertEquals(newLetterPage.driver.getTitle(), expectedTitleOfPageWithLastSavedDraft);
 
         // assert that all field contain the same information that before saving as draft
         assertEquals(newLetterPage.getMailAddress(), "ekaterinamoldavskaia18@gmail.com");

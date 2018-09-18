@@ -5,6 +5,8 @@ import Loggers.MyLogger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
+import static Utils.Screenshoter.takeScreenshot;
+
 public class HomePage extends AbstractPage {
     public HomePage(WebDriver driver) {
         super(driver);
@@ -21,7 +23,9 @@ public class HomePage extends AbstractPage {
     }
 
     public HomePage open() {
-        driver.navigate().to("https://mail.ru/");
+        String url = "https://mail.ru/";
+        driver.navigate().to(url);
+        MyLogger.info("Going to URL " + url);
         MyLogger.info("Mail.ru site is opened");
         return this;
     }
@@ -31,6 +35,9 @@ public class HomePage extends AbstractPage {
         String password = user.getPassword();
         driver.findElement(LOGIN_INPUT_LOCATOR).sendKeys(login);
         driver.findElement(PASSWORD_INPUT_LOCATOR).sendKeys(password);
+        highlightElement(SIGN_IN_BUTTON);
+        takeScreenshot();
+        unHighlightElement(SIGN_IN_BUTTON);
         driver.findElement(SIGN_IN_BUTTON).click();
         MyLogger.info("User was logged in with their credentials");
         return new IncomingMailsPage(driver);
